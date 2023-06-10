@@ -14,13 +14,14 @@ public class TaskManagerDbContext : DbContext
     {
     }
 
-    protected void OnConfiguring(DbContextOptionsBuilder options)
+    protected override void OnConfiguring(DbContextOptionsBuilder options)
     {
         var reader = new EnvReader();
         var dbHost = reader["DB_HOST"];
         var dbName = reader["DB_NAME"];
         var dbUsername = reader["DB_USERNAME"];
         var dbPassword = reader["DB_PASSWORD"];
+        Console.WriteLine(dbName);
         
         options.UseSqlServer(
             $"Server={dbHost}; Database={dbName}; User={dbUsername}; Password={dbPassword}");
@@ -28,7 +29,7 @@ public class TaskManagerDbContext : DbContext
     public DbSet<UserModel> Users { get; set; } = null!;
     public DbSet<TaskModel> Tasks { get; set; } = null!;
 
-    protected void OnModelCreating(ModelBuilder modelBuilder)
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new MapUser());
         modelBuilder.ApplyConfiguration(new MapTask());

@@ -5,9 +5,14 @@ using TaskManagerServer.Repositories;
 using TaskManagerServer.Repositories.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
-var app = builder.Build();
 var taskManagerFrontEnd = "_taskManagerFrontEnd";
 
+new EnvLoader()
+    .AddEnvFile("config.env")
+    .Load();
+
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddCors(options =>
 {
     var reader = new EnvReader();
@@ -31,8 +36,20 @@ builder.Services.AddEntityFrameworkSqlServer()
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 
+var app = builder.Build();
+
 app.UseCors(taskManagerFrontEnd);
 
 app.MapGet("/", () => "Hello World!");
+
+app.UseStaticFiles();
+
+app.UseRouting();
+
+app.UseHttpsRedirection();
+
+app.UseAuthorization();
+
+app.MapControllers();
 
 app.Run();
