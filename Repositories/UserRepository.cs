@@ -1,8 +1,11 @@
+using Microsoft.EntityFrameworkCore;
+using TaskManagerServer.Data;
 using TaskManagerServer.Models;
+using TaskManagerServer.Repositories.Interfaces;
 
 namespace TaskManagerServer.Repositories;
 
-public class UserRepository
+public class UserRepository : IUserRepository
 {
     private readonly TaskManagerDbContext _dbContext;
     
