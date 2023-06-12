@@ -21,7 +21,6 @@ public class TaskManagerDbContext : DbContext
         var dbName = reader["DB_NAME"];
         var dbUsername = reader["DB_USERNAME"];
         var dbPassword = reader["DB_PASSWORD"];
-        Console.WriteLine(dbName);
         
         options.UseSqlServer(
             $"Server={dbHost}; Database={dbName}; User={dbUsername}; Password={dbPassword}");

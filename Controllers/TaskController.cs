@@ -45,7 +45,7 @@ public class TaskController : ControllerBase
     }
         
     [HttpDelete("{id}")]
-    public async Task<ActionResult<TaskModel>> Delete([FromBody] int id)
+    public async Task<ActionResult<TaskModel>> Delete([FromRoute] int id)
     {
         bool deleted = await _taskRepository.Delete(id);
         return Ok(deleted);

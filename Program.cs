@@ -22,15 +22,19 @@ builder.Services.AddCors(options =>
         {
             policy.WithOrigins($"{dbHostPath}")
                 .AllowAnyHeader()
-                .AllowAnyMethod();
+                .AllowAnyMethod()
+                .AllowAnyOrigin();
         }
     );
 
 });
 
-builder.Services.AddEntityFrameworkSqlServer()
+builder.Services
     .AddDbContext<TaskManagerDbContext>(
-        options => options.UseSqlServer(builder.Configuration.GetConnectionString("DataBase"))
+        options => options.UseSqlServer(builder.Configuration.GetConnectionString("DataBase"), options =>
+        {
+            options.CommandTimeout(120);
+        })
     );
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -39,8 +43,6 @@ builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 var app = builder.Build();
 
 app.UseCors(taskManagerFrontEnd);
-
-app.MapGet("/", () => "Hello World!");
 
 app.UseStaticFiles();
 
